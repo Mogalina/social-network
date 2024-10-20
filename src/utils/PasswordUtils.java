@@ -1,16 +1,21 @@
 package utils;
 
+import exceptions.ValidationException;
 import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.regex.Pattern;
 
 /**
  * Utility class for password-related operations.
  * This class provides exclusively static methods accessable accross the application without instantiating objects.
  */
 public class PasswordUtils {
+
+    // Regular expression for validating password format (at least 8 chars, 1 letter, 1 number, 1 special char)
+    public static final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-zA-Z])(?=.*[!@#$%^&*]).{8,}$";
 
     /**
      * Hashes the provided password using the SHA-256 algorithm.
@@ -37,6 +42,17 @@ public class PasswordUtils {
 
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException("Error hashing password", e);
+        }
+    }
+
+    /**
+     * Checks if the provided password follows the right format.
+     *
+     * @param password the password to be checked
+     */
+    public static void checkPasswordFormat(@NotNull String password) {
+        if (!Pattern.matches(PASSWORD_REGEX, password)) {
+            throw new ValidationException("Invalid password format");
         }
     }
 }
