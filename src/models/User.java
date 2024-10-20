@@ -20,7 +20,7 @@ public class User extends Entity<Long> {
      *
      * @param username the username of the user
      * @param password the plain text password of the user (alternatively hashed)
-     * @param email    the email of the user
+     * @param email the email of the user
      */
     public User(String username, String password, String email) {
         this.username = username;

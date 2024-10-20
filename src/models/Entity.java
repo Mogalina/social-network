@@ -5,14 +5,15 @@ import java.util.Objects;
 
 /**
  * A generic base class for entities, identified by a unique identifier of type {@code ID}.
+ *
  * This class provides common functionality such as equality checks, hash code generation and string representation
  * based on the {@code id} field.
  *
  * @param <ID> the type of the entity's identifier
  */
-public class Entity<ID> implements Serializable {
+public class Entity<ID>  {
 
-    protected ID id;  // The type of the id is specified by the generic type.
+    protected ID id; // The type of the ID is specified by the generic type
 
     /**
      * Returns the identifier of the entity.
@@ -41,13 +42,9 @@ public class Entity<ID> implements Serializable {
      */
     @Override
     public boolean equals(Object o) {
-        // Check if same object instance (same reference)
         if (this == o) return true;
-
-        // Check if object is null or of a different class
         if (o == null || getClass() != o.getClass()) return false;
 
-        // Cast object to Entity and compare IDs
         Entity<?> entity = (Entity<?>) o;
         return Objects.equals(id, entity.id);
     }
