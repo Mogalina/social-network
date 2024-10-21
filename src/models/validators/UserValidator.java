@@ -23,7 +23,8 @@ public class UserValidator implements Validator<User> {
             throw new ValidationException("User must not be null");
         }
 
-        UsernameUtils.checkUsernameFormat(user.getUsername()); // Validate username format
+        UsernameUtils.checkNameFormat(user.getFirstName()); // Validate first name format
+        UsernameUtils.checkNameFormat(user.getLastName()); // Validate last name format
         EmailUtils.checkEmailFormat(user.getEmail()); // Validate email address format
     }
 }

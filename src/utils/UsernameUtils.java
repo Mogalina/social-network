@@ -11,20 +11,20 @@ import java.util.regex.Pattern;
 public class UsernameUtils {
 
     // Regular expression for validating username format (3 to 20 characters in [a-zA-z0-9._-])
-    private static final String USERNAME_REGEX = "^[a-zA-Z0-9._-]{3,20}$";
+    private static final String NAME_REGEX = "^[a-zA-Z0-9._-]{3,20}$";
 
     /**
-     * Checks if the provided username follows the right format.
+     * Checks if the provided name follows the right format.
      *
-     * @param username the username to be checked
-     * @throws ValidationException if the username is null or fails format criteria
+     * @param name the name to be checked
+     * @throws ValidationException if the name is null or fails format criteria
      */
-    public static void checkUsernameFormat(String username) {
-        if (username == null) {
-            throw new ValidationException("Username must not be null");
+    public static void checkNameFormat(String name) {
+        if (name == null) {
+            throw new ValidationException("Name must not be null");
         }
-        if (!Pattern.matches(USERNAME_REGEX, username)) {
-            throw new ValidationException("Invalid username format");
+        if (!Pattern.matches(NAME_REGEX, name)) {
+            throw new ValidationException("Invalid name format");
         }
     }
 }

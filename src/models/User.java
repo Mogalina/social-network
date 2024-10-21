@@ -10,40 +10,61 @@ import java.util.Objects;
  */
 public class User extends Entity<Long> {
 
-    private String username;
+    private String firstName;
+    private String lastName;
     private String password;
     private String email;
 
     /**
-     * Constructs a new {@code User} with the specified username, password (hashed), and email.
+     * Constructs a new {@code User} with the specified first name, last name, password (hashed), and email.
      * The password is hashed with the SHA-256 algorithm using {@code PasswordUtils}.
      *
-     * @param username the username of the user
+     * @param firstName the first name of the user
+     * @param lastName the last name of the user
      * @param password the plain text password of the user (alternatively hashed)
      * @param email the email of the user
      */
-    public User(String username, String password, String email) {
-        this.username = username;
+    public User(String firstName, String lastName, String password, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
         this.password = PasswordUtils.hashPassword(password);
         this.email = email;
     }
 
     /**
-     * Returns the username of the user.
+     * Returns the first name of the user.
      *
-     * @return the username of the user
+     * @return the first name of the user
      */
-    public String getUsername() {
-        return username;
+    public String getFirstName() {
+        return firstName;
     }
 
     /**
-     * Sets the username of the user.
+     * Sets the first name of the user.
      *
-     * @param username the new username of the user
+     * @param firstName the new first name of the user
      */
-    public void setUsername(String username) {
-        this.username = username;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    /**
+     * Returns the last name of the user.
+     *
+     * @return the last name of the user
+     */
+    public String getLastName() {
+        return lastName;
+    }
+
+    /**
+     * Sets the last name of the user.
+     *
+     * @param lastName the new last name of the user
+     */
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
     /**
@@ -84,7 +105,8 @@ public class User extends Entity<Long> {
 
     /**
      * Returns a string representation of the user.
-     * The string contains the ID, class name, username, password (hashed), and the email address of the user.
+     * The string contains the ID, class name, first name, last name, password (hashed), and the email address of the
+     * user.
      *
      * @return a string representation of the user
      */
@@ -92,7 +114,8 @@ public class User extends Entity<Long> {
     public String toString() {
         return "User { " +
                 "id=" + id +
-                ", username='" + username + '\'' +
+                ", first_name='" + firstName + '\'' +
+                ", last_name='" + lastName + '\'' +
                 ", password='" + password + '\'' +
                 ", email='" + email + '\'' +
                 " }";
@@ -100,7 +123,7 @@ public class User extends Entity<Long> {
 
     /**
      * Compares this user with another object for equality.
-     * Two users are considered equal if their IDs, usernames, or email addresses are equal.
+     * Two users are considered equal if their IDs, first names, last names, or email addresses are equal.
      *
      * @param o the object to be compared
      * @return {@code true} if this user is equal to the object, {@code false} otherwise
@@ -112,17 +135,18 @@ public class User extends Entity<Long> {
 
         User user = (User) o;
         return Objects.equals(id, user.getId()) &&
-                Objects.equals(username, user.getUsername()) &&
+                Objects.equals(firstName, user.getFirstName()) &&
+                Objects.equals(lastName, user.getLastName()) &&
                 Objects.equals(email, user.getEmail());
     }
 
     /**
-     * Returns the hash code of this user, based on its identifier, username, and email.
+     * Returns the hash code of this user, based on its identifier, first name, last name, and email.
      *
      * @return the hash code value of the user
      */
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, email);
+        return Objects.hash(id, firstName, lastName, email);
     }
 }
