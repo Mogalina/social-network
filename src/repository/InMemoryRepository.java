@@ -7,6 +7,7 @@ import models.validators.Validator;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * A generic in-memory (local) repository for managing entities.
@@ -34,22 +35,16 @@ public class InMemoryRepository<ID, E extends Entity<ID>> implements Repository<
      * Find an entity by its identifier.
      *
      * @param id the unique identifier of the entity to be retrieved
-     * @return the entity with the specified
-     * @throws EntityNotFoundException if the entity doesn't exist in the system
+     * @return an {@link Optional} containing the entity with the specified ID, or an empty {@code Optional} if no
+     *         entity is found
      * @throws NullPointerException if the provided identifier is null
      */
     @Override
-    public E findOne(ID id) throws EntityNotFoundException {
+    public Optional<E> findOne(ID id) {
         if (id == null) {
             throw new NullPointerException("ID must not be null");
         }
-
-        E entity = entities.get(id);
-        if (entity == null) {
-            throw new EntityNotFoundException();
-        }
-
-        return entity;
+        return Optional.ofNullable(entities.get(id));
     }
 
     /**
@@ -90,38 +85,38 @@ public class InMemoryRepository<ID, E extends Entity<ID>> implements Repository<
      * Deletes an entity from the repository (storage) by its identifier.
      *
      * @param id the unique identifier of the entity to be deleted
-     * @return the deleted entity
-     * @throws EntityNotFoundException if the entity doesn't exist in the system
+     * @return an {@link Optional} containing the deleted entity, or an empty {@code Optional} if no entity with the
+     *         specified ID exists
      * @throws NullPointerException if the provided identifier is null
      */
     @Override
-    public E delete(ID id) throws EntityNotFoundException {
+    public Optional<E> delete(ID id) {
         if (id == null) {
             throw new NullPointerException("ID must not be null");
         }
-
-        E entity = entities.remove(id);
-        if (entity == null) {
-            throw new EntityNotFoundException();
-        }
-        return entity;
+        return Optional.ofNullable(entities.remove(id));
     }
 
     /**
      * Updates an existing entity in the repository (storage).
      *
      * @param entity the entity to be updated
-     * @return the updated entity
+     * @return an {@link Optional} containing the updated entity
+     * @throws EntityNotFoundException if the entity does not exist in the system
      * @throws NullPointerException if the provided entity is null
      */
     @Override
-    public E update(E entity) {
+    public Optional<E> update(E entity) throws EntityNotFoundException {
         if (entity == null) {
             throw new NullPointerException("Entity must not be null");
         }
 
+        if (!entities.containsKey(entity.getId())) {
+            throw new EntityNotFoundException("Entity does not exist and cannot be updated.");
+        }
+
         validator.validate(entity);
         entities.put(entity.getId(), entity);
-        return entity;
+        return Optional.of(entity);
     }
 }

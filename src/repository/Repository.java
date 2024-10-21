@@ -4,6 +4,8 @@ import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityNotFoundException;
 import models.Entity;
 
+import java.util.Optional;
+
 /**
  * A generic repository interface for managing entities that extend the Entity class.
  *
@@ -19,10 +21,10 @@ public interface Repository<ID, E extends Entity<ID>> {
      * Finds an entity by its unique identifier.
      *
      * @param id the unique identifier of the entity to be retrieved
-     * @return the entity with the specified ID, or {@code null} if no entity is found
-     * @throws EntityNotFoundException if the entity doesn't exist in the system
+     * @return an {@link Optional} containing the entity with the specified ID, or an empty {@code Optional} if no
+     *         entity is found
      */
-    E findOne(ID id) throws EntityNotFoundException;
+    Optional<E> findOne(ID id);
 
     /**
      * Retrieves all entities managed by the repository.
@@ -37,7 +39,7 @@ public interface Repository<ID, E extends Entity<ID>> {
      * @param entity the entity to be saved or updated
      * @return the saved entity (if the entity is new, it will return the entity with any changes that occurred during
      *         the save operation, such as auto-generated IDs)
-     * @throws EntityAlreadyExistsException if entity already exists in the system
+     * @throws EntityAlreadyExistsException if the entity already exists in the system
      */
     E save(E entity) throws EntityAlreadyExistsException;
 
@@ -45,16 +47,17 @@ public interface Repository<ID, E extends Entity<ID>> {
      * Deletes an entity by its unique identifier.
      *
      * @param id the unique identifier of the entity to be deleted
-     * @return the deleted entity, or {@code null} if no entity with the specified ID exists
-     * @throws EntityNotFoundException if the entity doesn't exist in the system
+     * @return an {@link Optional} containing the deleted entity, or an empty {@code Optional} if no entity with the
+     *         specified ID exists
      */
-    E delete(ID id) throws EntityNotFoundException;
+    Optional<E> delete(ID id);
 
     /**
      * Updates an existing entity in the repository.
      *
      * @param entity the entity with updated data
-     * @return the updated entity, or {@code null} if the entity does not exist in the repository
+     * @return an {@link Optional} containing the updated entity
+     * @throws EntityNotFoundException if the entity does not exist in the system
      */
-    E update(E entity);
+    Optional<E> update(E entity) throws EntityNotFoundException;
 }

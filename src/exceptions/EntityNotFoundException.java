@@ -1,7 +1,7 @@
 package exceptions;
 
 /**
- * Exception to indicate that an entity doesn't exist in the system.
+ * Exception to indicate that an entity does not exist in the system.
  */
 public class EntityNotFoundException extends Throwable {
 
@@ -9,7 +9,7 @@ public class EntityNotFoundException extends Throwable {
      * Constructs a new EntityNotFoundException with a default message.
      */
     public EntityNotFoundException() {
-        super("Entity not found");
+        super("Entity does not exist");
     }
 
     /**
