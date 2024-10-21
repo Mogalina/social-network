@@ -5,7 +5,7 @@ import utils.PasswordUtils;
 import java.util.Objects;
 
 /**
- * Represents a User entity in the system network with a unique ID, username, hashed password and email.
+ * Represents a User entity in the system network with a unique ID, first name, last name, hashed password and email.
  * The {@code User} extends the {@code Entity} base class, using {@code Long} as the type of its identifier.
  */
 public class User extends Entity<Long> {
@@ -123,7 +123,7 @@ public class User extends Entity<Long> {
 
     /**
      * Compares this user with another object for equality.
-     * Two users are considered equal if their IDs, first names, last names, or email addresses are equal.
+     * Two users are considered equal if their IDs, first names, last names, and email addresses are equal.
      *
      * @param o the object to be compared
      * @return {@code true} if this user is equal to the object, {@code false} otherwise
