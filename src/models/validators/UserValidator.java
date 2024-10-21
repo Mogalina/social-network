@@ -12,7 +12,7 @@ import utils.UsernameUtils;
 public class UserValidator implements Validator<User> {
 
     /**
-     * Validates the provided User entity.
+     * Validates the provided {@link User} entity.
      *
      * @param user the entity to be validated
      * @throws ValidationException if the user is null or fails validation criteria
