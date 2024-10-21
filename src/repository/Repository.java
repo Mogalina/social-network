@@ -37,11 +37,10 @@ public interface Repository<ID, E extends Entity<ID>> {
      * Saves a new entity or updates an existing entity in the repository.
      *
      * @param entity the entity to be saved or updated
-     * @return the saved entity (if the entity is new, it will return the entity with any changes that occurred during
-     *         the save operation, such as auto-generated IDs)
-     * @throws EntityAlreadyExistsException if the entity already exists in the system
+     * @return an {@link Optional} containing the saved entity, or an empty {@code Optional} if no entity with the
+     *         specified ID exists
      */
-    E save(E entity) throws EntityAlreadyExistsException;
+    Optional<E> save(E entity);
 
     /**
      * Deletes an entity by its unique identifier.

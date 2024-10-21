@@ -61,24 +61,17 @@ public class InMemoryRepository<ID, E extends Entity<ID>> implements Repository<
      * Saves a new entity in the repository (storage).
      *
      * @param entity the entity to be saved
-     * @return the saved entity
-     * @throws EntityAlreadyExistsException if the entity already exists in the system
+     * @return an {@link Optional} containing the saved entity, or an empty {@code Optional} if no entity with the
+     *         specified ID exists
      * @throws NullPointerException if the provided entity is null
      */
     @Override
-    public E save(E entity) throws EntityAlreadyExistsException {
+    public Optional<E> save(E entity) {
         if (entity == null) {
             throw new NullPointerException("Entity must not be null");
         }
-
-        ID id = entity.getId();
-        if (entities.get(id) != null) {
-            throw new EntityAlreadyExistsException();
-        }
-
         validator.validate(entity);
-        entities.put(id, entity);
-        return entity;
+        return Optional.ofNullable(entities.putIfAbsent(entity.getId(), entity));
     }
 
     /**

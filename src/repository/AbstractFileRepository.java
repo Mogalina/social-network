@@ -93,14 +93,16 @@ public abstract class AbstractFileRepository<ID, E extends Entity<ID>> extends I
      * Saves a new entity in the repository (storage) and updates the specified file.
      *
      * @param entity the entity to be saved
-     * @return the saved entity
-     * @throws EntityAlreadyExistsException if the entity already exists in the system
+     * @return an {@link Optional} containing the saved entity, or an empty {@code Optional} if no entity with the
+     *         specified ID exists
      * @throws NullPointerException if the provided entity is null
      */
     @Override
-    public E save(E entity) throws EntityAlreadyExistsException {
-        E savedEntity = super.save(entity);
-        saveDataToFile();
+    public Optional<E> save(E entity) {
+        Optional<E> savedEntity = super.save(entity);
+        if (savedEntity.isPresent()) {
+            saveDataToFile();
+        }
         return savedEntity;
     }
 
