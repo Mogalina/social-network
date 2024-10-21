@@ -6,7 +6,7 @@ import utils.EmailUtils;
 import utils.UsernameUtils;
 
 /**
- * Validator responsible for validating User entities.
+ * Validator responsible for validating {@link User} entities.
  * This class implement the Validator interface for the User type.
  */
 public class UserValidator implements Validator<User> {

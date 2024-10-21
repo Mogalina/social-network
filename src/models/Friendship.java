@@ -34,7 +34,7 @@ public class Friendship extends Entity<Long> {
      *
      * @return the identifier of the sender
      */
-    public Long getSender() {
+    public Long getSenderId() {
         return uid1;
     }
 
@@ -43,7 +43,7 @@ public class Friendship extends Entity<Long> {
      *
      * @return the identifier of the receiver
      */
-    public Long getReceiver() {
+    public Long getReceiverId() {
         return uid2;
     }
 

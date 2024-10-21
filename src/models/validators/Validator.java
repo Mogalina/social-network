@@ -22,5 +22,5 @@ public interface Validator<T> {
      * @param entity the entity to be validated
      * @throws ValidationException if the entity fails to meet the validation criteria
      */
-    public void validate(T entity) throws ValidationException;
+    void validate(T entity) throws ValidationException;
 }
