@@ -1,6 +1,5 @@
 package repository;
 
-import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityNotFoundException;
 import models.Entity;
 
