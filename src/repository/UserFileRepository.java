@@ -13,31 +13,26 @@ import java.util.List;
  */
 public class UserFileRepository extends AbstractFileRepository<Long, User> {
 
-    private final String fieldsSeparator; // Custom fields separator
-
     /**
      * Constructs a new UserFileRepository with the specified file name and validator.
      *
      * @param fileName the name of the file used for data persistence
      * @param validator the validator used to validate User entities
-     * @param fieldsSeparator the separator for the fields of the record
      * @throws IOException if an error occurs while performing reading/writing operations on specified file
      */
-    public UserFileRepository(String fileName, Validator<User> validator, String fieldsSeparator) throws IOException {
+    public UserFileRepository(String fileName, Validator<User> validator) throws IOException {
         super(fileName, validator);
-        this.fieldsSeparator = fieldsSeparator;
     }
 
     /**
      * Extracts user fields from a record and creates a User entity.
-     * The fields are separated using a specified custom delimiter.
      *
      * @param record the string record containing the user fields
      * @return the User entity extracted from the record
      */
     @Override
     protected User extractEntity(@NotNull String record) {
-        List<String> fields = Arrays.asList(record.split(fieldsSeparator));
+        List<String> fields = Arrays.asList(record.split(","));
         Long id = Long.parseLong(fields.get(0));
         String firstName = fields.get(1);
         String lastName = fields.get(2);
@@ -51,7 +46,6 @@ public class UserFileRepository extends AbstractFileRepository<Long, User> {
 
     /**
      * Converts the User entity to a string representation format for saving it to the specified file.
-     * The fields are separated using a specified custom delimiter.
      *
      * @param user the User entity to be converted
      * @return the string representation of the User entity
@@ -59,9 +53,9 @@ public class UserFileRepository extends AbstractFileRepository<Long, User> {
     @Override
     protected String entityToString(@NotNull User user) {
         return user.getId() +
-                fieldsSeparator + user.getFirstName() +
-                fieldsSeparator + user.getLastName() +
-                fieldsSeparator + user.getPassword() +
-                fieldsSeparator + user.getEmail();
+                "," + user.getFirstName() +
+                "," + user.getLastName() +
+                "," + user.getPassword() +
+                "," + user.getEmail();
     }
 }
