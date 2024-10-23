@@ -3,11 +3,13 @@ package repository;
 import exceptions.EntityNotFoundException;
 import models.Entity;
 import models.validators.Validator;
+import utils.Config;
 
 import java.io.*;
 import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.logging.Level;
+import java.nio.file.Paths;
 
 /**
  * Abstract class for file-based repositories (in-memory/locally), providing CRUD (Create, Read, Update, Delete)
@@ -18,8 +20,8 @@ import java.util.logging.Level;
  */
 public abstract class AbstractFileRepository<ID, E extends Entity<ID>> extends InMemoryRepository<ID, E> {
 
-    // The name of the file used for data persistence
-    private final String fileName;
+    // The full path of the file used for data persistence
+    private final String filePath;
 
     // Predefined Logger for error reporting across application
     private static final Logger LOGGER = Logger.getLogger(AbstractFileRepository.class.getName());
@@ -33,7 +35,7 @@ public abstract class AbstractFileRepository<ID, E extends Entity<ID>> extends I
      */
     public AbstractFileRepository(String fileName, Validator<E> validator) throws IOException {
         super(validator);
-        this.fileName = fileName;
+        this.filePath = Paths.get(Config.DEFAULT_LOCAL_STORAGE_PATH, fileName + ".csv").toString();
         loadDataFromFile();
     }
 
@@ -43,14 +45,14 @@ public abstract class AbstractFileRepository<ID, E extends Entity<ID>> extends I
      * collection.
      */
     private void loadDataFromFile() {
-        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 E entity = extractEntity(line);
                 entities.put(entity.getId(), entity);
             }
         } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "An error occurred while loading data from file " + fileName, e);
+            LOGGER.log(Level.SEVERE, "An error occurred while loading data from file " + filePath, e);
         }
     }
 
@@ -60,13 +62,13 @@ public abstract class AbstractFileRepository<ID, E extends Entity<ID>> extends I
      * the specified file.
      */
     protected void saveDataToFile() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath))) {
             for (E entity : findAll()) {
                 writer.write(entityToString(entity));
                 writer.newLine();
             }
         } catch (IOException e) {
-            LOGGER.log(Level.SEVERE, "An error occurred while saving data to file " + fileName, e);
+            LOGGER.log(Level.SEVERE, "An error occurred while saving data to file " + filePath, e);
         }
     }
 
