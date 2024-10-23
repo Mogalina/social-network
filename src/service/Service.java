@@ -1,4 +1,4 @@
-package repository;
+package service;
 
 import exceptions.EntityNotFoundException;
 import models.Entity;
@@ -6,15 +6,12 @@ import models.Entity;
 import java.util.Optional;
 
 /**
- * A generic repository interface for managing entities that extend the Entity class.
- *
- * This interface provides CRUD operations (Create, Read, Update, Delete) for entities identified by a unique ID of type
- * {@code ID}.
+ * A generic service interface for managing operations between User Interface (UI) and Repository.
  *
  * @param <ID> the type of the unique identifier for the entity
- * @param <E> the type of the entity that extends {@link Entity} and is managed by the repository
+ * @param <E> the type of the entity that extends {@link Entity} and is managed by the service and repository
  */
-public interface Repository<ID, E extends Entity<ID>> {
+public interface Service<ID, E extends Entity<ID>> {
 
     /**
      * Finds an entity by its unique identifier.
@@ -23,7 +20,7 @@ public interface Repository<ID, E extends Entity<ID>> {
      * @return an {@link Optional} containing the entity with the specified ID, or an empty {@code Optional} if no
      *         entity is found
      */
-    Optional<E> findOne(ID id);
+    Optional<E> findById(ID id);
 
     /**
      * Retrieves all entities managed by the repository.
@@ -48,7 +45,7 @@ public interface Repository<ID, E extends Entity<ID>> {
      * @return an {@link Optional} containing the deleted entity, or an empty {@code Optional} if no entity with the
      *         specified ID exists
      */
-    Optional<E> delete(ID id);
+    Optional<E> deleteById(ID id);
 
     /**
      * Updates an existing entity in the repository.
