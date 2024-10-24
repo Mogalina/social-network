@@ -14,14 +14,14 @@ import java.util.Optional;
  */
 public class FriendshipValidator implements Validator<Friendship> {
 
-    private final Repository<Long, User> userRepository; // Repository for retrieving User entities
+    private final Repository<String, User> userRepository; // Repository for retrieving User entities
 
     /**
      * Constructs a new FriendshipValidator with a reference to {@link Repository} of {@link User} entities.
      *
      * @param userRepository the repository responsible for managing {@link User} entities
      */
-    public FriendshipValidator(Repository<Long, User> userRepository) {
+    public FriendshipValidator(Repository<String, User> userRepository) {
         this.userRepository = userRepository;
     }
 

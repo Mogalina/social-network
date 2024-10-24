@@ -1,5 +1,6 @@
 package service;
 
+import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityNotFoundException;
 import models.Entity;
 import repository.Repository;
@@ -56,9 +57,10 @@ public abstract class AbstractService<ID, E extends Entity<ID>> implements Servi
      * @param entity the entity to be saved or updated
      * @return an {@link Optional} containing the saved entity, or an empty {@code Optional} if no entity with the
      *         specified ID exists
+     * @throws EntityAlreadyExistsException if the entity already exists in the system
      */
     @Override
-    public Optional<E> save(E entity) {
+    public Optional<E> save(E entity) throws EntityAlreadyExistsException {
         return repository.save(entity);
     }
 

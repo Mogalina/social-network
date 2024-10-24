@@ -1,5 +1,6 @@
 package repository;
 
+import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityNotFoundException;
 import models.Entity;
 
@@ -36,10 +37,11 @@ public interface Repository<ID, E extends Entity<ID>> {
      * Saves a new entity or updates an existing entity in the repository.
      *
      * @param entity the entity to be saved or updated
-     * @return an {@link Optional} containing the saved entity, or an empty {@code Optional} if no entity with the
-     *         specified ID exists
+     * @return an {@link Optional} containing the saved entity, or an empty {@code Optional} if the entity already
+     *         exists in the system
+     * @throws EntityAlreadyExistsException if the entity already exists in the system
      */
-    Optional<E> save(E entity);
+    Optional<E> save(E entity) throws EntityAlreadyExistsException;
 
     /**
      * Deletes an entity by its unique identifier.

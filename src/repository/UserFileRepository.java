@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Repository class for managing User entities in a file-based/in-memory storage.
  */
-public class UserFileRepository extends AbstractFileRepository<Long, User> {
+public class UserFileRepository extends AbstractFileRepository<String, User> {
 
     /**
      * Constructs a new UserFileRepository with the specified file name and validator.
@@ -33,7 +33,7 @@ public class UserFileRepository extends AbstractFileRepository<Long, User> {
     @Override
     protected User extractEntity(@NotNull String record) {
         List<String> fields = Arrays.asList(record.split(","));
-        Long id = Long.parseLong(fields.get(0));
+        String id = fields.get(0);
         String firstName = fields.get(1);
         String lastName = fields.get(2);
         String password = fields.get(3);

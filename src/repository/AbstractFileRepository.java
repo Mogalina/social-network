@@ -1,5 +1,6 @@
 package repository;
 
+import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityNotFoundException;
 import models.Entity;
 import models.validators.Validator;
@@ -36,11 +37,18 @@ public abstract class AbstractFileRepository<ID, E extends Entity<ID>> extends I
     public AbstractFileRepository(String fileName, Validator<E> validator) throws IOException {
         super(validator);
         this.filePath = Paths.get(Config.DEFAULT_LOCAL_STORAGE_PATH, fileName + ".csv").toString();
+
+        // Create new file if it does not exist
+        File file = new File(filePath);
+        if (!file.exists()) {
+            file.createNewFile();
+        }
+
         loadDataFromFile();
     }
 
     /**
-     * Loads data from the specified file and populates the repository.
+     * Loads data from the specified file if exists, otherwise creates it, and populates the repository.
      * This method reads each line/record from the file, converts it to an entity, and stores it in the in-memory/local
      * collection.
      */
@@ -94,14 +102,15 @@ public abstract class AbstractFileRepository<ID, E extends Entity<ID>> extends I
      * Saves a new entity in the repository (storage) and updates the specified file.
      *
      * @param entity the entity to be saved
-     * @return an {@link Optional} containing the saved entity, or an empty {@code Optional} if no entity with the
-     *         specified ID exists
+     * @return an {@link Optional} containing the saved entity, or an empty {@code Optional} if the entity already
+     *         exists in the system
+     * @throws EntityAlreadyExistsException if the entity already exists in the system
      * @throws NullPointerException if the provided entity is null
      */
     @Override
-    public Optional<E> save(E entity) {
+    public Optional<E> save(E entity) throws EntityAlreadyExistsException {
         Optional<E> savedEntity = super.save(entity);
-        if (savedEntity.isPresent()) {
+        if (savedEntity.isEmpty()) {
             saveDataToFile();
         }
         return savedEntity;

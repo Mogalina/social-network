@@ -1,5 +1,6 @@
 package service;
 
+import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityNotFoundException;
 import models.Entity;
 
@@ -35,8 +36,9 @@ public interface Service<ID, E extends Entity<ID>> {
      * @param entity the entity to be saved or updated
      * @return an {@link Optional} containing the saved entity, or an empty {@code Optional} if no entity with the
      *         specified ID exists
+     * @throws EntityAlreadyExistsException if the entity already exists in the system
      */
-    Optional<E> save(E entity);
+    Optional<E> save(E entity) throws EntityAlreadyExistsException;
 
     /**
      * Deletes an entity by its unique identifier.

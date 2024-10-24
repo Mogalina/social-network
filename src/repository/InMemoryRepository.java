@@ -1,5 +1,6 @@
 package repository;
 
+import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityNotFoundException;
 import models.Entity;
 import models.validators.Validator;
@@ -27,7 +28,7 @@ public class InMemoryRepository<ID, E extends Entity<ID>> implements Repository<
      */
     public InMemoryRepository(Validator<E> validator) {
         this.validator = validator;
-        this.entities = new HashMap<ID, E>();
+        this.entities = new HashMap<>();
     }
 
     /**
@@ -60,17 +61,25 @@ public class InMemoryRepository<ID, E extends Entity<ID>> implements Repository<
      * Saves a new entity in the repository (storage).
      *
      * @param entity the entity to be saved
-     * @return an {@link Optional} containing the saved entity, or an empty {@code Optional} if no entity with the
-     *         specified ID exists
+     * @return an {@link Optional} containing the saved entity, or an empty {@code Optional} if the entity already
+     *         exists in the system
+     * @throws EntityAlreadyExistsException if the entity already exists in the system
      * @throws NullPointerException if the provided entity is null
      */
-    @Override
-    public Optional<E> save(E entity) {
+    public Optional<E> save(E entity) throws EntityAlreadyExistsException {
         if (entity == null) {
             throw new NullPointerException("Entity must not be null");
         }
+
         validator.validate(entity);
-        return Optional.ofNullable(entities.putIfAbsent(entity.getId(), entity));
+
+        boolean exists = entities.values().stream().anyMatch(existingEntity -> existingEntity.equals(entity));
+        if (exists) {
+            throw new EntityAlreadyExistsException();
+        }
+
+        entities.put(entity.getId(), entity);
+        return Optional.of(entity);
     }
 
     /**

@@ -2,16 +2,17 @@ package models;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Represents a Friendship entity in the system newtork with a unique ID, sender id, receiver id, request date and a
  * request pending state.
  * The {@code Friendship} extends the {@code Entity} base class, using {@code Long} as the type of its identifier.
  */
-public class Friendship extends Entity<Long> {
+public class Friendship extends Entity<String> {
 
-    private final Long uid1; // Sender's identifier
-    private final Long uid2; // Receiver's identifier
+    private final String uid1; // Sender's identifier
+    private final String uid2; // Receiver's identifier
     private LocalDateTime date; // The request date
     private boolean pending; // Request pending state
 
@@ -21,7 +22,8 @@ public class Friendship extends Entity<Long> {
      * @param uid1 the identifier of the sender user
      * @param uid2 the identifier of the receiver user
      */
-    public Friendship(Long uid1, Long uid2) {
+    public Friendship(String uid1, String uid2) {
+        setId(UUID.randomUUID().toString());
         this.uid1 = uid1;
         this.uid2 = uid2;
         this.date = LocalDateTime.now(); // Automatically sets the current date and time
@@ -33,7 +35,7 @@ public class Friendship extends Entity<Long> {
      *
      * @return the identifier of the sender
      */
-    public Long getSenderId() {
+    public String getSenderId() {
         return uid1;
     }
 
@@ -42,7 +44,7 @@ public class Friendship extends Entity<Long> {
      *
      * @return the identifier of the receiver
      */
-    public Long getReceiverId() {
+    public String getReceiverId() {
         return uid2;
     }
 
@@ -87,8 +89,8 @@ public class Friendship extends Entity<Long> {
      *
      * @return an array containing the sender id and receiver id
      */
-    public Long[] getUsers() {
-        return new Long[]{uid1, uid2};
+    public String[] getUsers() {
+        return new String[]{uid1, uid2};
     }
 
     /**
@@ -97,7 +99,7 @@ public class Friendship extends Entity<Long> {
      * @param uid the user identifier to check
      * @return {@code true} if the user is involed in the friendship request, {@code false} otherwise
      */
-    public boolean containsUser(Long uid) {
+    public boolean containsUser(String uid) {
         return uid1.equals(uid) || uid2.equals(uid);
     }
 
@@ -107,8 +109,8 @@ public class Friendship extends Entity<Long> {
      * @param uid the identifier of the user
      * @return the identifier of user's friend
      */
-    public Long getFriendIdOfUser(Long uid) {
-        return uid1 + uid2 - uid;
+    public String getFriendIdOfUser(String uid) {
+        return Objects.equals(uid, uid1) ? uid2 : uid1;
     }
 
     /**
@@ -119,13 +121,12 @@ public class Friendship extends Entity<Long> {
      */
     @Override
     public String toString() {
-        return "Friendship { " +
-                "id=" + id + '\'' +
-                "uid1=" + uid1 + '\'' +
-                "uid2=" + uid2 + '\'' +
-                "date=" + date + '\'' +
-                "pending=" + pending +
-                " }";
+        return "@FRIENDSHIP | " +
+                "ID <" + id + ">" +
+                " | UID1 <" + uid1 + ">" +
+                " | UID2 <" + uid2 + ">" +
+                " | DATE <" + date + ">" +
+                " | PENDING <" + pending + ">";
     }
 
     /**

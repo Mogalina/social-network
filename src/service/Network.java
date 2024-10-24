@@ -1,5 +1,6 @@
 package service;
 
+import exceptions.EntityAlreadyExistsException;
 import exceptions.EntityNotFoundException;
 import models.Friendship;
 import models.User;
@@ -11,28 +12,28 @@ import java.util.stream.StreamSupport;
 
 public class Network {
 
-    private final Service<Long, User> userService;
-    private final Service<Long, Friendship> friendshipService;
+    private final Service<String, User> userService;
+    private final Service<String, Friendship> friendshipService;
 
-    public Network(Service<Long, User> userService, Service<Long, Friendship> friendshipService) {
+    public Network(Service<String, User> userService, Service<String, Friendship> friendshipService) {
         this.userService = userService;
         this.friendshipService = friendshipService;
     }
 
-    public Optional<User> findUser(Long id) {
+    public Optional<User> findUser(String id) {
         return userService.findById(id);
     }
 
-    public Optional<User> addUser(User user) {
-        return userService.save(user);
+    public void addUser(User user) throws EntityAlreadyExistsException {
+        userService.save(user);
     }
 
-    public Optional<User> deleteUser(User user) {
+    public void deleteUser(String uid) throws EntityNotFoundException {
         StreamSupport.stream(friendshipService.findAll().spliterator(), false)
-                .filter(friendship -> friendship.containsUser(user.getId()))
+                .filter(friendship -> friendship.containsUser(uid))
                 .forEach(friendship -> friendshipService.deleteById(friendship.getId()));
 
-        return userService.deleteById(user.getId());
+        userService.deleteById(uid);
     }
 
     public Optional<User> updateUser(User user) throws EntityNotFoundException {
@@ -74,7 +75,7 @@ public class Network {
                 .collect(Collectors.toList());
     }
 
-    public void makeFriendship(User user1, User user2) {
+    public void makeFriendship(User user1, User user2) throws EntityAlreadyExistsException {
         Friendship senderToReceiver = new Friendship(user1.getId(), user2.getId());
         senderToReceiver.setPending(false);
         friendshipService.save(senderToReceiver);
@@ -93,11 +94,19 @@ public class Network {
                 .ifPresentOrElse(
                         pendingFriendship -> {
                             friendshipService.deleteById(pendingFriendship.getId());
-                            makeFriendship(sender, receiver);
+                            try {
+                                makeFriendship(sender, receiver);
+                            } catch (EntityAlreadyExistsException e) {
+                                throw new RuntimeException(e);
+                            }
                         },
                         () -> {
                             Friendship friendRequest = new Friendship(sender.getId(), receiver.getId());
-                            friendshipService.save(friendRequest);
+                            try {
+                                friendshipService.save(friendRequest);
+                            } catch (EntityAlreadyExistsException e) {
+                                throw new RuntimeException(e);
+                            }
                         }
                 );
     }

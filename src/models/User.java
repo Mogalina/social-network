@@ -3,12 +3,13 @@ package models;
 import utils.PasswordUtils;
 
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Represents a User entity in the system network with a unique ID, first name, last name, hashed password and email.
  * The {@code User} extends the {@code Entity} base class, using {@code Long} as the type of its identifier.
  */
-public class User extends Entity<Long> {
+public class User extends Entity<String> {
 
     private String firstName;
     private String lastName;
@@ -25,6 +26,7 @@ public class User extends Entity<Long> {
      * @param email the email of the user
      */
     public User(String firstName, String lastName, String password, String email) {
+        setId(UUID.randomUUID().toString());
         this.firstName = firstName;
         this.lastName = lastName;
         this.password = PasswordUtils.hashPassword(password);
@@ -112,18 +114,17 @@ public class User extends Entity<Long> {
      */
     @Override
     public String toString() {
-        return "User { " +
-                "id=" + id +
-                ", first_name='" + firstName + '\'' +
-                ", last_name='" + lastName + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                " }";
+        return "@USER | " +
+                "ID <" + id + ">" +
+                " | FIRST_NAME <" + firstName + ">" +
+                " | LAST_NAME <" + lastName + ">" +
+                " | EMAIL <" + email + ">" +
+                " | PASSWORD <" + password + ">";
     }
 
     /**
      * Compares this user with another object for equality.
-     * Two users are considered equal if their IDs, first names, last names, and email addresses are equal.
+     * Two users are considered equal if their email addresses are equal.
      *
      * @param o the object to be compared
      * @return {@code true} if this user is equal to the object, {@code false} otherwise
@@ -134,10 +135,7 @@ public class User extends Entity<Long> {
         if (o == null || getClass() != o.getClass()) return false;
 
         User user = (User) o;
-        return Objects.equals(id, user.getId()) &&
-                Objects.equals(firstName, user.getFirstName()) &&
-                Objects.equals(lastName, user.getLastName()) &&
-                Objects.equals(email, user.getEmail());
+        return Objects.equals(email, user.getEmail());
     }
 
     /**

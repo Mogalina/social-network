@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Repository class for managing Friendship entities in a file-based/in-memory storage.
  */
-public class FriendshipFileRepository extends AbstractFileRepository<Long, Friendship> {
+public class FriendshipFileRepository extends AbstractFileRepository<String, Friendship> {
 
     /**
      * Constructs a new FriendshipFileRepository with the specified file name and validator.
@@ -34,9 +34,9 @@ public class FriendshipFileRepository extends AbstractFileRepository<Long, Frien
     @Override
     protected Friendship extractEntity(@NotNull String record) {
         List<String> fields = Arrays.asList(record.split(","));
-        Long id = Long.parseLong(fields.get(0));
-        Long uid1 = Long.parseLong(fields.get(1));
-        Long uid2 = Long.parseLong(fields.get(2));
+        String id = fields.get(0);
+        String uid1 = fields.get(1);
+        String uid2 = fields.get(2);
         LocalDateTime date = LocalDateTime.parse(fields.get(3));
         boolean pending = Boolean.parseBoolean(fields.get(4));
 
