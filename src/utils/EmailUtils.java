@@ -19,7 +19,7 @@ public class EmailUtils {
      * @param email the email address to be checked
      * @throws ValidationException if the email address is null or fails format criteria
      */
-    public static void checkEmailFormat(String email) {
+    public static void checkEmailFormat(String email) throws ValidationException {
         if (email == null) {
             throw new ValidationException("Email must not be null");
         }

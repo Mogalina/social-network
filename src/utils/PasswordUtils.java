@@ -49,8 +49,9 @@ public class PasswordUtils {
      * Checks if the provided password follows the right format.
      *
      * @param password the password to be checked
+     * @throws ValidationException if the password is null or fails format criteria
      */
-    public static void checkPasswordFormat(@NotNull String password) {
+    public static void checkPasswordFormat(@NotNull String password) throws ValidationException {
         if (!Pattern.matches(PASSWORD_REGEX, password)) {
             throw new ValidationException("Invalid password format");
         }

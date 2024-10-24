@@ -19,7 +19,7 @@ public class UsernameUtils {
      * @param name the name to be checked
      * @throws ValidationException if the name is null or fails format criteria
      */
-    public static void checkNameFormat(String name) {
+    public static void checkNameFormat(String name) throws ValidationException {
         if (name == null) {
             throw new ValidationException("Name must not be null");
         }
