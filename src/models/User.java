@@ -116,10 +116,10 @@ public class User extends Entity<String> {
     public String toString() {
         return "@USER | " +
                 "ID <" + id + ">" +
-                " | FIRST_NAME <" + firstName + ">" +
-                " | LAST_NAME <" + lastName + ">" +
-                " | EMAIL <" + email + ">" +
-                " | PASSWORD <" + password + ">";
+                "\n      | FIRST_NAME <" + firstName + ">" +
+                "\n      | LAST_NAME <" + lastName + ">" +
+                "\n      | EMAIL <" + email + ">" +
+                "\n      | PASSWORD <" + password + ">";
     }
 
     /**

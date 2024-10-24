@@ -123,10 +123,10 @@ public class Friendship extends Entity<String> {
     public String toString() {
         return "@FRIENDSHIP | " +
                 "ID <" + id + ">" +
-                " | UID1 <" + uid1 + ">" +
-                " | UID2 <" + uid2 + ">" +
-                " | DATE <" + date + ">" +
-                " | PENDING <" + pending + ">";
+                "\n            | UID1 <" + uid1 + ">" +
+                "\n            | UID2 <" + uid2 + ">" +
+                "\n            | DATE <" + date + ">" +
+                "\n            | PENDING <" + pending + ">";
     }
 
     /**

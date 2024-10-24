@@ -57,10 +57,12 @@ public abstract class AbstractFileRepository<ID, E extends Entity<ID>> extends I
             String line;
             while ((line = reader.readLine()) != null) {
                 E entity = extractEntity(line);
-                entities.put(entity.getId(), entity);
+                super.save(entity);
             }
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "An error occurred while loading data from file " + filePath, e);
+        } catch (EntityAlreadyExistsException e) {
+            throw new RuntimeException(e);
         }
     }
 
@@ -110,7 +112,7 @@ public abstract class AbstractFileRepository<ID, E extends Entity<ID>> extends I
     @Override
     public Optional<E> save(E entity) throws EntityAlreadyExistsException {
         Optional<E> savedEntity = super.save(entity);
-        if (savedEntity.isEmpty()) {
+        if (savedEntity.isPresent()) {
             saveDataToFile();
         }
         return savedEntity;
