@@ -24,7 +24,7 @@ public class Friendship extends Entity<Long> {
     public Friendship(Long uid1, Long uid2) {
         this.uid1 = uid1;
         this.uid2 = uid2;
-        this.date = LocalDateTime.now(); // // Automatically sets the current date and time
+        this.date = LocalDateTime.now(); // Automatically sets the current date and time
         this.pending = true;
     }
 
