@@ -1,7 +1,10 @@
 package service;
 
 import models.Friendship;
+import models.User;
 import repository.Repository;
+
+import java.util.Optional;
 
 /**
  * Specialized service class for performing operations on friendship relationships between users via repository.

@@ -12,7 +12,7 @@ public class Friendship extends Entity<Long> {
 
     private final Long uid1; // Sender's identifier
     private final Long uid2; // Receiver's identifier
-    private final LocalDateTime date; // The request date
+    private LocalDateTime date; // The request date
     private boolean pending; // Request pending state
 
     /**
@@ -20,12 +20,11 @@ public class Friendship extends Entity<Long> {
      *
      * @param uid1 the identifier of the sender user
      * @param uid2 the identifier of the receiver user
-     * @param date the request date of the friendship
      */
-    public Friendship(Long uid1, Long uid2, LocalDateTime date) {
+    public Friendship(Long uid1, Long uid2) {
         this.uid1 = uid1;
         this.uid2 = uid2;
-        this.date = date;
+        this.date = LocalDateTime.now(); // // Automatically sets the current date and time
         this.pending = true;
     }
 
@@ -54,6 +53,15 @@ public class Friendship extends Entity<Long> {
      */
     public LocalDateTime getDate() {
         return date;
+    }
+
+    /**
+     * Sets the date of the friendship request.
+     *
+     * @param date the request date of the friendship.
+     */
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 
     /**

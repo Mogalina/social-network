@@ -40,7 +40,8 @@ public class FriendshipFileRepository extends AbstractFileRepository<Long, Frien
         LocalDateTime date = LocalDateTime.parse(fields.get(3));
         boolean pending = Boolean.parseBoolean(fields.get(4));
 
-        Friendship friendship = new Friendship(uid1, uid2, date);
+        Friendship friendship = new Friendship(uid1, uid2);
+        friendship.setDate(date);
         friendship.setPending(pending);
         friendship.setId(id);
         return friendship;
