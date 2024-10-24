@@ -102,6 +102,16 @@ public class Friendship extends Entity<Long> {
     }
 
     /**
+     * Returns the identifier of the user's friend from request.
+     *
+     * @param uid the identifier of the user
+     * @return the identifier of user's friend
+     */
+    public Long getFriendIdOfUser(Long uid) {
+        return uid1 + uid2 - uid;
+    }
+
+    /**
      * Returns a string representation of the friendship.
      * The string contains the ID, sender id, receiver id, request date and pending state.
      *
